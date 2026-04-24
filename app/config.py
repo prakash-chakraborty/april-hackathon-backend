@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         env_file = ".env"
 
     @property
-    def database_url(self) -> str:
+    def database_url(self):
         return (
             f"postgresql://{self.pguser}:{self.pgpassword}"
             f"@{self.pghost}:{self.pgport}/{self.pgdatabase}"
