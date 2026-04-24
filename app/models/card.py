@@ -6,9 +6,10 @@ from app.db import Base
 
 class Card(Base):
     __tablename__ = "cards"
+    __table_args__ = {"schema": "retail_copilot"}
 
     id = Column(Integer, primary_key=True, index=True)
-    page_id = Column(Integer, ForeignKey("pages.id"), nullable=False)
+    page_id = Column(Integer, ForeignKey("retail_copilot.pages.id"), nullable=False)
     title = Column(String(200), nullable=False)
     card_type = Column(String(50), nullable=False)
     metric_title = Column(String(200), nullable=False)

@@ -7,6 +7,7 @@ from app.db import Base
 
 class Page(Base):
     __tablename__ = "pages"
+    __table_args__ = {"schema": "retail_copilot"}
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(120), nullable=False)
