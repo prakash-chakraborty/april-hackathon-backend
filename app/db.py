@@ -5,7 +5,8 @@ from app.config import settings
 
 engine = create_engine(
     settings.database_url,
-    connect_args={"options": "-csearch_path=retail_copilot"}
+    connect_args={"options": "-csearch_path=retail_copilot"},
+    pool_pre_ping=True,
 )
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 

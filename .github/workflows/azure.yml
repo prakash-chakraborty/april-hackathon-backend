@@ -1,0 +1,43 @@
+name: Push to Azure Dev
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+    IMAGE_NAME: 'retail-copilot-be'
+    CONTAINER_APP : 'capp-retail-copilot-be'
+
+jobs:
+    publish:
+        environment: 
+          name: 'Dev'
+        runs-on: ubuntu-latest
+        permissions:
+          contents: read
+          id-token: write
+        steps:
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@v4
+
+        - name: 'Az CLI login'
+          uses: azure/login@v2.2.0
+          with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+        - name: Azure Container Registry Login
+          uses: azure/docker-login@v2
+          with:
+            login-server: ${{ vars.ACR_LOGIN }}
+            username: ${{ secrets.ACR_USERNAME }}
+            password: ${{ secrets.ACR_PASSWORD }}
+
+        - name: Build and push Docker image to ACR
+          run: |
+            docker build \
+              -t ${{ vars.ACR_LOGIN }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+              -t ${{ vars.ACR_LOGIN }}/${{ env.IMAGE_NAME }}:latest .
+            docker push --all-tags ${{ vars.ACR_LOGIN }}/${{ env.IMAGE_NAME }}

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.db import engine, Base
 from app.routes import health, users, pages, cards
 
 app = FastAPI(title="Retail Copilot API")
@@ -18,8 +17,3 @@ app.include_router(health.router)
 app.include_router(users.router, prefix="/api")
 app.include_router(pages.router, prefix="/api")
 app.include_router(cards.router, prefix="/api")
-
-
-@app.on_event("startup")
-def on_startup():
-    Base.metadata.create_all(bind=engine)

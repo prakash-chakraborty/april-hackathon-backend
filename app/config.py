@@ -18,6 +18,7 @@ class Settings(BaseSettings):
         return (
             f"postgresql://{self.pguser}:{self.pgpassword}"
             f"@{self.pghost}:{self.pgport}/{self.pgdatabase}"
+            f"?sslmode=require"
         )
 
 
